@@ -1,0 +1,24 @@
+.page-wrapper {
+    min-height: calc(100vh - 260px);
+    background-color: #f8f9fa;
+}
+
+.content-wrapper {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+}
+
+.empty-state {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 3rem;
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        min-height: calc(100vh - 210px);
+    }
+}

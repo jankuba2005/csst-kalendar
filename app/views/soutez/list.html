@@ -1,0 +1,118 @@
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1 class="display-5 fw-bold">Kalendář soutěží v silovém trojboji</h1>
+    </div>
+    <div class="col-md-4 text-md-end d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+      <a href="/soutez/add" class="btn btn-primary me-2"><i class="fas fa-plus-circle"></i> Přidat soutěž</a>
+      <a href="/import" class="btn btn-success"><i class="fas fa-file-import"></i> Import</a>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-light">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Hledat soutěž...">
+          </div>
+        </div>
+        <div class="col-md-4 text-end">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary" id="showAll">Všechny</button>
+            <button type="button" class="btn btn-outline-secondary" id="showUpcoming">Nadcházející</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+        <tr>
+          <th class="sortable" data-sort="date">Datum <i class="fas fa-sort ms-1"></i></th>
+          <th class="sortable" data-sort="remaining">Zbývá <i class="fas fa-sort ms-1"></i></th>
+          <th class="sortable" data-sort="name">Název <i class="fas fa-sort ms-1"></i></th>
+          <th>Vybavení</th>
+          <th>Kategorie</th>
+          <th>Disciplíny</th>
+          <th>Pořadatel</th>
+          <th>Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        <repeat group="{{ @soutez }}" value="{{ @soutez }}">
+          <tr class="competition-row">
+            <td>{{ date('d.m.Y', strtotime(@soutez.datum)) }}</td>
+            <td>
+              <check if="{{ ($remaining = ceil((strtotime(@soutez.datum) - time()) / 86400)) > 0 }}">
+                <true><span class="badge bg-primary">{{ $remaining }} dnů</span></true>
+                <false>
+                  <check if="{{ $remaining == 0 }}">
+                    <true><span class="badge bg-success">Dnes</span></true>
+                    <false><span class="badge bg-secondary">Proběhlo</span></false>
+                  </check>
+                </false>
+              </check>
+            </td>
+            <td><strong>{{ @soutez.nazev }}</strong></td>
+            <td>
+              <check if="{{ @soutez.vybaveni == 'equipped' }}">
+                <true><span class="badge bg-info text-dark">EQ</span></true>
+              </check>
+              <check if="{{ @soutez.vybaveni == 'raw' }}">
+                <true><span class="badge bg-warning text-dark">RAW</span></true>
+              </check>
+              <check if="{{ @soutez.vybaveni == 'both' }}">
+                <true><span class="badge bg-dark">EQ+RAW</span></true>
+              </check>
+            </td>
+            <td>
+              <check if="{{ @soutez.kategorie == 'druzstva' }}">
+                <true><span class="badge rounded-pill bg-secondary">Družstva</span></true>
+              </check>
+              <check if="{{ @soutez.kategorie == 'jednotlivci' }}">
+                <true><span class="badge rounded-pill bg-secondary">Jednotlivci</span></true>
+              </check>
+              <check if="{{ @soutez.kategorie == 'both' }}">
+                <true><span class="badge rounded-pill bg-secondary">Družstva+Jednotlivci</span></true>
+              </check>
+            </td>
+            <td>
+              <check if="{{ is_array(@soutez.discipliny) }}">
+                <true>
+                  <repeat group="{{ @soutez.discipliny }}" value="{{ @disciplina }}">
+                    <span class="badge bg-light text-dark me-1">{{ @disciplina }}</span>
+                  </repeat>
+                </true>
+                <false>
+                  <check if="{{ is_string(@soutez.discipliny) && @soutez.discipliny }}">
+                    <true>
+                      <repeat group="{{ json_decode(@soutez.discipliny, true) ?: [@soutez.discipliny] }}" value="{{ @disciplina }}">
+                        <span class="badge bg-light text-dark me-1">{{ @disciplina }}</span>
+                      </repeat>
+                    </true>
+                    <false>-</false>
+                  </check>
+                </false>
+              </check>
+            </td>
+            <td>{{ @soutez.poradatel }}</td>
+            <td>
+              <a href="/soutez/{{ @soutez.id }}" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-info-circle"></i> Detail
+              </a>
+            </td>
+          </tr>
+        </repeat>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer bg-white text-muted d-flex justify-content-between">
+      <span>Zobrazeno <span id="countShowing">0</span> soutěží z celkem <span id="countTotal">0</span></span>
+      <span class="text-end">Naposledy aktualizováno: {{ date('d.m.Y H:i') }}</span>
+    </div>
+  </div>
+</div>

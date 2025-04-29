@@ -1,0 +1,18 @@
+.sortable {
+    cursor: pointer;
+}
+.badge {
+    font-weight: 500;
+}
+.table > tbody > tr:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+.table th {
+    font-weight: 600;
+}
+@media (max-width: 768px) {
+    .table > tbody > tr > td {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+}

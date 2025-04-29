@@ -1,0 +1,18 @@
+{
+  "name": "jankuba/csst-souteze-kalendar",
+  "description": "Importovani soutezi skzr google kalendar",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "kuba.jan",
+      "email": "kuba.jan@prumkadc.cz"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree": ">=3.8.2",
+    "ikkez/f3-cortex": ">=v1.7.7",
+    "ikkez/f3-flash": ">=1.0.2",
+    "xfra35/f3-access": ">=v1.2.2"
+  }
+}
